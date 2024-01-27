@@ -1,22 +1,29 @@
 package com.example.ghibliapi.ui.screen
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.example.ghibliapi.model.MainViewModel
+import com.example.ghibliapi.ui.Routes
 import com.example.ghibliapi.ui.components.FilmRowItem
+import com.example.ghibliapi.ui.components.NavBar
+import com.example.ghibliapi.ui.components.SearchBar
 
 @Preview(
     showBackground = true,
@@ -28,6 +35,7 @@ fun FilmListScreenPreview() {
     FilmListScreen()
 }
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalGlideComposeApi::class)
 @Preview(
     showBackground = true,
     showSystemUi = true,
@@ -36,16 +44,18 @@ fun FilmListScreenPreview() {
 
 @Composable
 fun FilmListScreen(navController: NavController? = null,
-    viewModel: MainViewModel = MainViewModel()
+    viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
+
+    val searchListFilter = viewModel.myList.filter {
+        it.title.contains(viewModel.searchText.value)
+    }
+
     // Récupère la liste de films Ghibli
     val myList = viewModel.myList
 
-    // Récupère l'état de chargement
-    val runInProgress = viewModel.runInProgress.collectAsState()
-
     // Récupère le message d'erreur
-    val errorMessage = viewModel.errorMessage.collectAsState()
+    val errorMessage = viewModel.errorMessage.value
 
     // Charge les données Ghibli
     LaunchedEffect(Unit) {
@@ -54,7 +64,7 @@ fun FilmListScreen(navController: NavController? = null,
     }
 
     // Affiche un message d'erreur si nécessaire
-    if (errorMessage.value.isNotEmpty()) {
+    if (errorMessage.isNotEmpty()) {
         AlertDialog(
             onDismissRequest = {
                 viewModel.errorMessage.value = ""
@@ -63,7 +73,7 @@ fun FilmListScreen(navController: NavController? = null,
                 Text(text = "Erreur")
             },
             text = {
-                Text(text = errorMessage.value)
+                Text(text = errorMessage)
             },
             confirmButton = {
                 Button(
@@ -77,24 +87,29 @@ fun FilmListScreen(navController: NavController? = null,
         )
     }
 
-    // Affiche un indicateur de chargement si nécessaire
-    if (runInProgress.value) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
-        }
-    }
+    Column {
 
-    // Affiche la liste des films Ghibli
-    LazyColumn(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        items(viewModel.myList.size) {
-            FilmRowItem(data = viewModel.myList[it], onClick = {
-                println("TODO")
-            })
+        NavBar(searchText = viewModel.searchText)
+
+        Column(
+            modifier = Modifier
+                .padding(8.dp)
+        ) {
+
+            Spacer(modifier = Modifier.size(8.dp))
+
+            // Affiche la liste des films Ghibli
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(searchListFilter.size) {
+                    FilmRowItem(data = searchListFilter[it], onClick = {
+                        println("click on item: ${myList[it]}")
+                        navController?.navigate(Routes.DetailFilmScreen.addParam(it))
+                    })
+                }
+            }
         }
     }
 }

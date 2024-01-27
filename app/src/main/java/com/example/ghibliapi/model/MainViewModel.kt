@@ -3,6 +3,7 @@ package com.example.ghibliapi.model
 
 // MainViewModel.kt
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,13 +16,13 @@ import kotlinx.coroutines.launch
 class MainViewModel : ViewModel() {
 
     // StateFlow pour gérer l'état de chargement
-    var runInProgress = MutableStateFlow(false)
+    var runInProgress = mutableStateOf(false)
 
     // StateFlow pour gérer les messages d'erreur
-    var errorMessage = MutableStateFlow("")
+    var errorMessage = mutableStateOf("")
 
     // Liste de films Ghibli
-    val myList = mutableListOf<GhibliFilm>()
+    val myList = mutableStateListOf<GhibliFilm>()
 
     // Texte de recherche
     var searchText = mutableStateOf("")
@@ -31,6 +32,8 @@ class MainViewModel : ViewModel() {
     }
 
     fun getFilterListBySearchText() = myList.filter { it.title.contains(searchText.value, ignoreCase = true)}
+
+    fun getOneFilm(id: String) = myList.find { it.id == id }
 
     // Fonction pour charger les données Ghibli
     fun loadGhibliData() {

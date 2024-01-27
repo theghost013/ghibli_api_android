@@ -45,7 +45,7 @@ fun ScreenPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            
+            Screen()
         }
     }
 }
@@ -63,7 +63,7 @@ fun ScreenPreviewDark() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            
+            Screen()
         }
     }
 }

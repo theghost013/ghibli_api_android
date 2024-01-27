@@ -3,9 +3,10 @@ package com.example.ghibliapi.ui.screen
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.util.Objects
 
 fun main() {
-    val res = GhibliAPI.loadFilms()
+    val res = GhibliAPI.LoadOneFilm("2baf70d1-42bb-4437-b551-e5fed5a87abe")
     println(res)
 }
 
@@ -18,6 +19,11 @@ object GhibliAPI {
     fun loadFilms(): List<GhibliFilm> {
         val json = sendGet(URL_API)
         return gson.fromJson(json, Array<GhibliFilm>::class.java).toList()
+    }
+
+    fun LoadOneFilm(id: String): GhibliFilm  {
+        val json = sendGet(URL_API + "/" + id)
+        return gson.fromJson(json, GhibliFilm::class.java)
     }
 
     // Méthode générique qui prend en entrée une URL, exécute la requête et retourne la réponse JSON
