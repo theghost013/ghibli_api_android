@@ -19,7 +19,7 @@ import com.example.ghibliapi.model.MainViewModel
 import com.example.ghibliapi.ui.Routes
 import com.example.ghibliapi.ui.screen.DetailFilmScreen
 import com.example.ghibliapi.ui.screen.FilmListScreen
-import com.example.ghibliapi.ui.screen.Screen
+import com.example.ghibliapi.ui.screen.HomeScreen
 import com.example.ghibliapi.ui.theme.GhibliApiTheme
 
 class MainActivity : ComponentActivity() {
@@ -44,10 +44,10 @@ fun AppNavigation() {
     val navController : NavHostController = rememberNavController()
     val viewModel : MainViewModel = viewModel()
 
-    NavHost(navController = navController, startDestination = Routes.FilmListScreen.route) {
+    NavHost(navController = navController, startDestination = Routes.HomeScreen.route) {
 
-        composable(Routes.Screen.route) {
-            Screen(navController, viewModel)
+        composable(Routes.HomeScreen.route) {
+            HomeScreen(navController, viewModel)
         }
 
         composable(Routes.FilmListScreen.route) {

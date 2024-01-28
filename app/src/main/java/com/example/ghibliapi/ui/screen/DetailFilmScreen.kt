@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.ghibliapi.model.MainViewModel
+import com.example.ghibliapi.ui.components.NavBar
 
 @Composable
 fun DetailFilmScreen(id: Int, navController: NavHostController? = null, viewModel: MainViewModel = viewModel()) {
@@ -32,6 +33,8 @@ fun DetailFilmScreen(id: Int, navController: NavHostController? = null, viewMode
             .padding(8.dp)
     ) {
 
+        NavBar(navController, searchText = viewModel.searchText)
+
         Text(
             text = data?.title ?: "Pas de donnée",
             fontSize = 36.sp,
@@ -40,40 +43,27 @@ fun DetailFilmScreen(id: Int, navController: NavHostController? = null, viewMode
             modifier = Modifier.fillMaxWidth()
         )
 
+        Spacer(modifier = Modifier.size(30.dp))
+
         if (data != null) {
             Text(
-                text = data.director,
-                fontSize = 36.sp,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.secondary,
+                text = "director: " + data.director,
+                fontSize = 20.sp,
                 modifier = Modifier.fillMaxWidth()
             )
-        }
 
-        Text(
-            text = data?.director ?: "Pas de donnée",
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(Modifier.size(16.dp))
-
-        Button(
-            onClick = {
-
-                navController?.popBackStack()
-            },
-            contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
-            modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
-        ) {
-            Icon(
-                Icons.Filled.ArrowBack,
-                contentDescription = "Localized description",
-                modifier = Modifier.size(ButtonDefaults.IconSize)
+            Text(
+                text = "producer: " + data.producer,
+                fontSize = 20.sp,
+                modifier = Modifier.fillMaxWidth()
             )
-            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-            Text("Retour")
-        }
 
-        Spacer(Modifier.size(8.dp))
+            Text(
+                text = "release_date: " + data.release_date,
+                fontSize = 20.sp,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+        }
     }
 }

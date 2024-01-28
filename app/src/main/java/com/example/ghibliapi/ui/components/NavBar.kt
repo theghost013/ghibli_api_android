@@ -24,10 +24,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.ghibliapi.ui.Routes
+import okhttp3.Route
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun NavBar (navController: NavController? = null, searchText: MutableState<String>) {
+fun NavBar (navController: NavController? = null, searchText: MutableState<String>, searchIcon : Boolean = false) {
 
     var searchActive by remember {
         mutableStateOf(false)
@@ -42,7 +44,7 @@ fun NavBar (navController: NavController? = null, searchText: MutableState<Strin
     ) {
         IconButton(
             onClick = {
-                navController?.navigateUp()
+                navController?.popBackStack()
             }
         ) {
             Icon(
@@ -56,16 +58,21 @@ fun NavBar (navController: NavController? = null, searchText: MutableState<Strin
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(8.dp)
         )
-        IconButton(
-            onClick = {
-                searchActive = !searchActive
+        if (searchIcon) {
+            IconButton(
+                onClick = {
+                    searchActive = !searchActive
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "Search"
+                )
             }
-        ) {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = "Search"
-            )
+        } else {
+            IconButton(onClick = {}) {}
         }
+        
     }
     if (searchActive) {
         SearchBar(searchText = searchText)

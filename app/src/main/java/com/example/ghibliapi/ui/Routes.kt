@@ -2,7 +2,7 @@ package com.example.ghibliapi.ui
 
 sealed class Routes(val route: String) {
 
-    data object Screen : Routes("screen")
+    data object HomeScreen : Routes("homeScreen")
 
     data object FilmListScreen : Routes("filmListScreen")
 

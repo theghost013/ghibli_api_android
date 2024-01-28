@@ -48,6 +48,6 @@ data class GhibliFilm(
     var title: String,
     var director: String,
     var producer: String,
-    var releaseDate: String,
+    var release_date: String,
     // ... Ajoutez d'autres champs selon les besoins
 )

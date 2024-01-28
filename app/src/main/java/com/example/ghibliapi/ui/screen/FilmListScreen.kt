@@ -23,7 +23,6 @@ import com.example.ghibliapi.model.MainViewModel
 import com.example.ghibliapi.ui.Routes
 import com.example.ghibliapi.ui.components.FilmRowItem
 import com.example.ghibliapi.ui.components.NavBar
-import com.example.ghibliapi.ui.components.SearchBar
 
 @Preview(
     showBackground = true,
@@ -89,7 +88,7 @@ fun FilmListScreen(navController: NavController? = null,
 
     Column {
 
-        NavBar(searchText = viewModel.searchText)
+        NavBar(navController, searchText = viewModel.searchText, searchIcon = true)
 
         Column(
             modifier = Modifier

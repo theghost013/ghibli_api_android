@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.sp
 
 @Composable
@@ -34,6 +33,7 @@ fun FilmRowItem(modifier: Modifier = Modifier, data: GhibliFilm, onClick : () ->
 
         Column(modifier = Modifier
             .clickable(onClick = onClick)
+            .fillMaxWidth()
         ) {
             Text(
                 text = data.title,
